@@ -57,8 +57,8 @@ async function sync() {
     });
 
     // 2. Add source links for "Source: path/to/file.py:line-range"
-    // Handle patterns like "Source: worker/jobs.py:66-240, shared/database.py:26-33"
-    transformed = transformed.replace(/Source:\s*([^\n]+)/g, (match, sourceList) => {
+    // Handles plain "Source: ..." and styled "*Source: ...*" or "**Source: ...**"
+    transformed = transformed.replace(/(\*+)?Source:\s*([^*]+)(\*+)?/g, (match, prefix, sourceList, suffix) => {
       const links = sourceList.split(',').map((s: string) => {
         const trimmed = s.trim();
         const parts = trimmed.split(':');
@@ -70,7 +70,17 @@ async function sync() {
         }
         return trimmed;
       });
-      return `Source: ${links.join(', ')}`;
+      return `${prefix || ''}Source: ${links.join(', ')}${suffix || ''}`;
+    });
+
+    // 3. Link files in "Source Files" table
+    // Matches: | `path/to/file.ext` |
+    transformed = transformed.replace(/\|\s*`([^`\n]+)`\s*\|/g, (match, filePath) => {
+      // Check if it's actually a file path (has extension or common structure)
+      if (filePath.includes('.') || filePath.includes('/')) {
+        return `| [\`${filePath}\`](${GITHUB_REPO_URL}/blob/main/${filePath}) |`;
+      }
+      return match;
     });
 
     return transformed;

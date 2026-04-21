@@ -15,7 +15,7 @@ AutoWiki 的后端架构采用 FastAPI 构建高性能 REST API，并结合 WebS
 *   **统一错误处理**：通过 `ApiError` 类封装 HTTP 状态码与业务逻辑错误，提供诸如 `404 Not Found` 或 `500 Internal Server Error` 的标准化捕获机制。
 *   **数据转换与清洗**：将后端返回的原始格式（`RepoRaw`）转换为 UI 友好的模型（`Repository`），处理诸如日期格式转换、默认值填充等操作。
 
-*Source: [web/lib/api.ts:23-274*](https://github.com/lazyxiang/AutoWiki/blob/main/web/lib/api.ts#L23-L274*)
+*Source: [web/lib/api.ts:23-274](https://github.com/lazyxiang/AutoWiki/blob/main/web/lib/api.ts#L23-L274)*
 
 ### 数据模型定义
 
@@ -63,7 +63,7 @@ classDiagram
     Repository "1" *-- "n" ResearchPlanStep : "包含调研步骤"
 ```
 
-*Source: [web/lib/api.ts:161-226*](https://github.com/lazyxiang/AutoWiki/blob/main/web/lib/api.ts#L161-L226*)
+*Source: [web/lib/api.ts:161-226](https://github.com/lazyxiang/AutoWiki/blob/main/web/lib/api.ts#L161-L226)*
 
 后端通过 `RepoRaw` 返回数据库中的原始记录，包含符合 API 规范的下划线命名法字段。前端 `getRepo` 或 `getRepositories` 函数在接收到数据后，会将其转换为 `Repository` 类型，将 `created_at` 等字符串转换为 JavaScript `Date` 对象，并将 `snake_case` 转换为 `camelCase` 以符合前端编程规范。
 
@@ -85,7 +85,7 @@ classDiagram
 | `createChatSession` | `repoId` | `Promise<{session_id}>` | 为 RAG 对话初始化会话上下文，关联“对话式问答系统”。 |
 | `getJob` | `jobId` | `Promise<JobStatus>` | 轮询异步任务（Arq 任务）的当前执行进度。 |
 
-*Source: [web/lib/api.ts:23-274*](https://github.com/lazyxiang/AutoWiki/blob/main/web/lib/api.ts#L23-L274*)
+*Source: [web/lib/api.ts:23-274](https://github.com/lazyxiang/AutoWiki/blob/main/web/lib/api.ts#L23-L274)*
 
 这些接口通过标准化的 HTTP 动作进行交互。例如，`submitRepo` 通常对应 `POST` 请求，而获取调研结果则对应带有路径参数的 `GET` 请求。
 
@@ -137,4 +137,4 @@ sequenceDiagram
 
 | File |
 |------|
-| `web/lib/api.ts` |
+| [`web/lib/api.ts`](https://github.com/lazyxiang/AutoWiki/blob/main/web/lib/api.ts) |

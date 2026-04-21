@@ -57,7 +57,7 @@ classDiagram
     LLMConfig ..> LLMProvider : configures
 ```
 
-*Source: [worker/llm/base.py:49-155](https://github.com/lazyxiang/AutoWiki/blob/main/worker/llm/base.py#L49-L155), [shared/config.py:11-32*](https://github.com/lazyxiang/AutoWiki/blob/main/shared/config.py#L11-L32*)
+*Source: [worker/llm/base.py:49-155](https://github.com/lazyxiang/AutoWiki/blob/main/worker/llm/base.py#L49-L155), [shared/config.py:11-32](https://github.com/lazyxiang/AutoWiki/blob/main/shared/config.py#L11-L32)*
 
 ## 核心接口与功能定义
 
@@ -72,7 +72,7 @@ classDiagram
 
 为了增强容错性，基类提供了 `_parse_json_response` 工具函数。由于 Gemini 等模型有时会将 JSON 包裹在 Markdown 代码块（如 ` ```json `）中，该函数会自动剥离这些装饰符，确保 `json.loads` 的稳定性。
 
-*Source: [worker/llm/base.py:15-85*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/llm/base.py#L15-L85*)
+*Source: [worker/llm/base.py:15-85](https://github.com/lazyxiang/AutoWiki/blob/main/worker/llm/base.py#L15-L85)*
 
 ## 配置与环境管理
 
@@ -85,7 +85,7 @@ AutoWiki 使用 Pydantic 模型 `LLMConfig` 和 `EmbeddingConfig` 集中管理 A
     *   `EmbeddingConfig.provider` 默认为 `"openai"`。
     *   `ChatConfig` 控制历史对话窗口大小，默认为 10 条消息。
 
-*Source: [shared/config.py:11-103*](https://github.com/lazyxiang/AutoWiki/blob/main/shared/config.py#L11-L103*)
+*Source: [shared/config.py:11-103](https://github.com/lazyxiang/AutoWiki/blob/main/shared/config.py#L11-L103)*
 
 ## 执行流程与并发控制
 
@@ -122,8 +122,8 @@ flowchart TD
 
 | File |
 |------|
-| `worker/llm/base.py` |
-| `shared/config.py` |
-| `worker/embedding/base.py` |
-| `worker/llm/prompt_segment.py` |
-| `tests/worker/test_llm.py` |
+| [`worker/llm/base.py`](https://github.com/lazyxiang/AutoWiki/blob/main/worker/llm/base.py) |
+| [`shared/config.py`](https://github.com/lazyxiang/AutoWiki/blob/main/shared/config.py) |
+| [`worker/embedding/base.py`](https://github.com/lazyxiang/AutoWiki/blob/main/worker/embedding/base.py) |
+| [`worker/llm/prompt_segment.py`](https://github.com/lazyxiang/AutoWiki/blob/main/worker/llm/prompt_segment.py) |
+| [`tests/worker/test_llm.py`](https://github.com/lazyxiang/AutoWiki/blob/main/tests/worker/test_llm.py) |

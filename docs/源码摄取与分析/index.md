@@ -38,7 +38,7 @@ flowchart TD
     Readme --> End["Stage 1 完成: 返回文件列表"]
 ```
 
-*Source: [worker/pipeline/ingestion.py:88-340*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/ingestion.py#L88-L340*)
+*Source: [worker/pipeline/ingestion.py:88-340](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/ingestion.py#L88-L340)*
 
 ## 语法结构解析 (AST Analysis)
 
@@ -89,7 +89,7 @@ classDiagram
     FileInfo "1" *-- "*" Entity : contains
 ```
 
-*Source: [worker/pipeline/ast_analysis.py:348-537*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/ast_analysis.py#L348-L537*)
+*Source: [worker/pipeline/ast_analysis.py:348-537](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/ast_analysis.py#L348-L537)*
 
 ## 依赖图谱构建与分析
 
@@ -108,7 +108,7 @@ classDiagram
 *   **边 (Edges)**：文件 A 显式导入文件 B 中的符号。
 *   **路径解析逻辑**：支持相对路径转换、绝对包名匹配及常见后缀（.py, .js, .ts）的启发式猜测。
 
-*Source: [worker/pipeline/dependency_graph.py:143-370*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/dependency_graph.py#L143-L370*)
+*Source: [worker/pipeline/dependency_graph.py:143-370](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/dependency_graph.py#L143-L370)*
 
 ## LLM 上下文优化
 
@@ -123,13 +123,13 @@ classDiagram
 
 通过这种“有损但保留关键特征”的压缩方式，AutoWiki 能够确保即使是数万行的代码库，其核心架构设计也能被 LLM 完整捕获。
 
-*Source: [worker/pipeline/ast_analysis.py:377-537](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/ast_analysis.py#L377-L537), [worker/pipeline/dependency_graph.py:430-489*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/dependency_graph.py#L430-L489*)
+*Source: [worker/pipeline/ast_analysis.py:377-537](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/ast_analysis.py#L377-L537), [worker/pipeline/dependency_graph.py:430-489](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/dependency_graph.py#L430-L489)*
 
 ## Source Files
 
 | File |
 |------|
-| `worker/pipeline/ast_analysis.py` |
-| `worker/pipeline/dependency_graph.py` |
-| `worker/pipeline/ingestion.py` |
-| `worker/pipeline/outline_anchors.py` |
+| [`worker/pipeline/ast_analysis.py`](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/ast_analysis.py) |
+| [`worker/pipeline/dependency_graph.py`](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/dependency_graph.py) |
+| [`worker/pipeline/ingestion.py`](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/ingestion.py) |
+| [`worker/pipeline/outline_anchors.py`](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/outline_anchors.py) |

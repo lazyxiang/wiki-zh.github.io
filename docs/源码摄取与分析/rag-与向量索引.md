@@ -30,11 +30,11 @@ flowchart TD
     J --> K["构建完成"]
 ```
 
-*Source: [worker/pipeline/rag_indexer.py:577-669*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/rag_indexer.py#L577-L669*)
+*Source: [worker/pipeline/rag_indexer.py:577-669](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/rag_indexer.py#L577-L669)*
 
 在 `build_rag_index` 的实现中，通过 `async_retry` 装饰器对嵌入过程进行了容错处理，以应对网络抖动或 API 配额限制（参考 `worker/utils/retry.py`）。此外，系统支持通过 `file_entities` 参数传入预先提取的 AST（抽象语法树）信息，这直接决定了分块的质量。
 
-*Source: [worker/pipeline/rag_indexer.py:577-600*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/rag_indexer.py#L577-L600*)
+*Source: [worker/pipeline/rag_indexer.py:577-600](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/rag_indexer.py#L577-L600)*
 
 ## 文档分块策略
 
@@ -50,7 +50,7 @@ flowchart TD
 ### 常规分块 (chunk_file_with_lines)
 该策略依赖于 `langchain_text_splitters.RecursiveCharacterTextSplitter`。其关键特性在于 `chunk_size` 和 `overlap` 的动态调整，同时在元数据中记录 `start_line` 和 `end_line`。这确保了在检索阶段，系统能够定位到代码的确切位置。
 
-*Source: [worker/pipeline/rag_indexer.py:47-120*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/rag_indexer.py#L47-L120*)
+*Source: [worker/pipeline/rag_indexer.py:47-120](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/rag_indexer.py#L47-L120)*
 
 ### 实体感知分块 (chunk_file_with_entities)
 这是 AutoWiki 的核心优势所在。它接受一个 `entities` 列表，其中包含 AST 提取出的 `start_line` 和 `end_line`。
@@ -58,7 +58,7 @@ flowchart TD
 2. **超大实体拆分**：如果实体超出阈值，则在实体内部进行带有 `overlap` 的子分块。
 3. **残留代码收集**：对于文件开头、结尾或实体之间的零散代码段（如模块级变量定义、导入语句），算法会自动识别并独立分块。
 
-*Source: [worker/pipeline/rag_indexer.py:123-287*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/rag_indexer.py#L123-L287*)
+*Source: [worker/pipeline/rag_indexer.py:123-287](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/rag_indexer.py#L123-L287)*
 
 ## FAISS 向量存储管理
 
@@ -88,13 +88,13 @@ classDiagram
     FAISSStore ..> faiss_IndexFlatIP : 封装
 ```
 
-*Source: [worker/pipeline/rag_indexer.py:290-348*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/rag_indexer.py#L290-L348*)
+*Source: [worker/pipeline/rag_indexer.py:290-348](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/rag_indexer.py#L290-L348)*
 
 ### 检索优化
 在检索阶段，`search()` 方法支持一种特殊的“文档优先”逻辑。如果设置了 `doc_k` 参数，系统会优先从元数据中标记为文档（`_is_doc_chunk`）的块中筛选结果。
 `multi_search()` 方法则进一步提升了 RAG 的召回率。它允许同时输入多个查询向量（例如，由 LLM 生成的多个重写问题），并在内部对结果进行去重处理，确保返回的 `k` 个结果是最相关的且不重复。
 
-*Source: [worker/pipeline/rag_indexer.py:350-492*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/rag_indexer.py#L350-L492*)
+*Source: [worker/pipeline/rag_indexer.py:350-492](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/rag_indexer.py#L350-L492)*
 
 ### 持久化机制
 `FAISSStore` 将数据持久化为两个文件：
@@ -103,7 +103,7 @@ classDiagram
 
 加载时，`load()` 方法通过 `faiss.read_index` 和 `pickle.loads` 恢复内存结构。如果文件不存在或损坏，将抛出 `FileNotFoundError`。
 
-*Source: [worker/pipeline/rag_indexer.py:494-543*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/rag_indexer.py#L494-L543*)
+*Source: [worker/pipeline/rag_indexer.py:494-543](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/rag_indexer.py#L494-L543)*
 
 ## 测试与验证
 
@@ -121,12 +121,12 @@ classDiagram
 *   **集成测试**：
     *   `test_build_rag_index`：使用 Mock 对象模拟 `EmbeddingProvider`，验证 `build_rag_index` 是否能够正确遍历目录并协调各组件完成索引构建。
 
-*Source: [tests/worker/test_rag_indexer.py:13-142*](https://github.com/lazyxiang/AutoWiki/blob/main/tests/worker/test_rag_indexer.py#L13-L142*)
+*Source: [tests/worker/test_rag_indexer.py:13-142](https://github.com/lazyxiang/AutoWiki/blob/main/tests/worker/test_rag_indexer.py#L13-L142)*
 
 ## Source Files
 
 | File |
 |------|
-| `worker/pipeline/rag_indexer.py` |
-| `worker/embedding/base.py` |
-| `tests/worker/test_rag_indexer.py` |
+| [`worker/pipeline/rag_indexer.py`](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/rag_indexer.py) |
+| [`worker/embedding/base.py`](https://github.com/lazyxiang/AutoWiki/blob/main/worker/embedding/base.py) |
+| [`tests/worker/test_rag_indexer.py`](https://github.com/lazyxiang/AutoWiki/blob/main/tests/worker/test_rag_indexer.py) |

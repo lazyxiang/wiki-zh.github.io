@@ -38,7 +38,7 @@ flowchart TD
     style G fill:#bbf,stroke:#333,stroke-width:2px
 ```
 
-*Source: [worker/jobs.py:1-120](https://github.com/lazyxiang/AutoWiki/blob/main/worker/jobs.py#L1-L120), [GEMINI.md:32-37*](https://github.com/lazyxiang/AutoWiki/blob/main/GEMINI.md#L32-L37*)
+*Source: [worker/jobs.py:1-120](https://github.com/lazyxiang/AutoWiki/blob/main/worker/jobs.py#L1-L120), [GEMINI.md:32-37](https://github.com/lazyxiang/AutoWiki/blob/main/GEMINI.md#L32-L37)*
 
 1.  **Repo Ingestion**: 执行浅克隆并过滤无关文件。
 2.  **AST Analysis**: 利用 Tree-Sitter 提取代码实体（类、函数、常量）。
@@ -61,7 +61,7 @@ flowchart TD
 | **Internal JSON** | `to_internal_json()` | `ast/wiki_plan.json` | `files`, `repo_notes`, `pages` | 流水线内部持久化，支持增量生成。 |
 | **API Structure** | `to_api_structure()` | API Response | `slug`, `parent_slug`, `has_user_notes` | 前端展示和导航树构建。 |
 
-*Source: [worker/pipeline/wiki_planner.py:115-308*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/wiki_planner.py#L115-L308*)
+*Source: [worker/pipeline/wiki_planner.py:115-308](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/wiki_planner.py#L115-L308)*
 
 `WikiPageSpec` 包含一个独特的 `slug` 属性，该属性通过 `_slugify_title` 函数生成。它确保了页面在 URL 中的唯一性和安全性，支持 Unicode 字符，并在极端情况下通过哈希值保证唯一性。
 
@@ -101,7 +101,7 @@ classDiagram
     WikiPlanner ..> WikiPlan : 创建
 ```
 
-*Source: [worker/pipeline/wiki_planner.py:115-308*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/wiki_planner.py#L115-L308*)
+*Source: [worker/pipeline/wiki_planner.py:115-308](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/wiki_planner.py#L115-L308)*
 
 ### 1. 结构大纲生成 (Phase 1)
 系统首先调用 LLM 生成页面的树状结构。此过程由 `_generate_outline` 驱动，根据仓库的 `file_count` 和 `entity_count`（由 `_suggest_page_range` 建议），规划出 5 到 20 个不等的页面。系统会根据 `_depth` 函数校验标题前缀（如 "#" 或 "##"），确保目录树不超过两层深度。
@@ -137,7 +137,7 @@ classDiagram
 
 | File |
 |------|
-| `worker/pipeline/wiki_planner.py` |
-| `worker/jobs.py` |
-| `worker/pipeline/page_outline.py` |
-| `worker/pipeline/page_generator.py` |
+| [`worker/pipeline/wiki_planner.py`](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/wiki_planner.py) |
+| [`worker/jobs.py`](https://github.com/lazyxiang/AutoWiki/blob/main/worker/jobs.py) |
+| [`worker/pipeline/page_outline.py`](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/page_outline.py) |
+| [`worker/pipeline/page_generator.py`](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/page_generator.py) |

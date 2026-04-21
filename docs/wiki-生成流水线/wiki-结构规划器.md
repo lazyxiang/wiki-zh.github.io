@@ -138,5 +138,5 @@ classDiagram
 
 | File |
 |------|
-| `worker/pipeline/wiki_planner.py` |
-| `tests/worker/test_wiki_planner.py` |
+| [`worker/pipeline/wiki_planner.py`](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/wiki_planner.py) |
+| [`tests/worker/test_wiki_planner.py`](https://github.com/lazyxiang/AutoWiki/blob/main/tests/worker/test_wiki_planner.py) |
