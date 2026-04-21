@@ -1,5 +1,6 @@
 {
   "label": "Wiki 生成流水线",
+  "position": 3,
   "link": {
     "type": "doc",
     "id": "wiki-生成流水线/index"

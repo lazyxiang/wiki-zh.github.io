@@ -1,5 +1,6 @@
 {
   "label": "系统核心基础",
+  "position": 1,
   "link": {
     "type": "doc",
     "id": "系统核心基础/index"

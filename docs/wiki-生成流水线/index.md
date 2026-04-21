@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # Wiki 生成流水线
 
 AutoWiki 的生成流水线是一个高度结构化的多阶段异步处理过程。它将原始的源代码仓库作为输入，通过静态分析、语义建模和生成式人工智能，最终产出结构严谨、内容详实且具备互联参考能力的 Wiki 文档。该流水线由 `worker/jobs.py` 调度，核心逻辑分布在 `worker/pipeline/` 目录下的多个专门模块中。
@@ -34,7 +38,7 @@ flowchart TD
     style G fill:#bbf,stroke:#333,stroke-width:2px
 ```
 
-*Source: worker/jobs.py:1-120, GEMINI.md:32-37*
+*Source: [worker/jobs.py:1-120](https://github.com/lazyxiang/AutoWiki/blob/main/worker/jobs.py#L1-L120), [GEMINI.md:32-37*](https://github.com/lazyxiang/AutoWiki/blob/main/GEMINI.md#L32-L37*)
 
 1.  **Repo Ingestion**: 执行浅克隆并过滤无关文件。
 2.  **AST Analysis**: 利用 Tree-Sitter 提取代码实体（类、函数、常量）。
@@ -57,11 +61,11 @@ flowchart TD
 | **Internal JSON** | `to_internal_json()` | `ast/wiki_plan.json` | `files`, `repo_notes`, `pages` | 流水线内部持久化，支持增量生成。 |
 | **API Structure** | `to_api_structure()` | API Response | `slug`, `parent_slug`, `has_user_notes` | 前端展示和导航树构建。 |
 
-*Source: worker/pipeline/wiki_planner.py:115-308*
+*Source: [worker/pipeline/wiki_planner.py:115-308*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/wiki_planner.py#L115-L308*)
 
 `WikiPageSpec` 包含一个独特的 `slug` 属性，该属性通过 `_slugify_title` 函数生成。它确保了页面在 URL 中的唯一性和安全性，支持 Unicode 字符，并在极端情况下通过哈希值保证唯一性。
 
-*Source: worker/pipeline/wiki_planner.py:89-98, 145-162*
+*Source: [worker/pipeline/wiki_planner.py:89-98](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/wiki_planner.py#L89-L98), 145-162*
 
 ## 页面规划与文件分配逻辑
 
@@ -97,7 +101,7 @@ classDiagram
     WikiPlanner ..> WikiPlan : 创建
 ```
 
-*Source: worker/pipeline/wiki_planner.py:115-308*
+*Source: [worker/pipeline/wiki_planner.py:115-308*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/wiki_planner.py#L115-L308*)
 
 ### 1. 结构大纲生成 (Phase 1)
 系统首先调用 LLM 生成页面的树状结构。此过程由 `_generate_outline` 驱动，根据仓库的 `file_count` 和 `entity_count`（由 `_suggest_page_range` 建议），规划出 5 到 20 个不等的页面。系统会根据 `_depth` 函数校验标题前缀（如 "#" 或 "##"），确保目录树不超过两层深度。
@@ -108,7 +112,7 @@ classDiagram
 *   **启发式回退 (`_heuristic_select_files`)**: 如果 LLM 分配失败或不完整，系统会计算文件与页面的匹配分数。分数由路径重合度（`_tokenize`）、依赖关联和实体密度共同决定。
 *   **目录聚类回退 (`_directory_cluster_assign`)**: 作为最后的保底手段，系统会将顶级目录作为聚类中心，将文件分配给标题词项最匹配的页面。
 
-*Source: worker/pipeline/wiki_planner.py:638-722, 821-944*
+*Source: [worker/pipeline/wiki_planner.py:638-722](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/wiki_planner.py#L638-L722), 821-944*
 
 ## 质量校验与自动化重试机制
 
@@ -125,7 +129,7 @@ classDiagram
     *   系统默认支持 `max_retries = 3`。
     *   每次重试时，`_build_selection_user` 会将上一次失败的错误信息（`last_error`）反馈给模型，实现闭环纠错。
 
-*Source: worker/pipeline/wiki_planner.py:79-86, 496-528, 531-601, 604-635*
+*Source: [worker/pipeline/wiki_planner.py:79-86](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/wiki_planner.py#L79-L86), 496-528, 531-601, 604-635*
 
 在页面内容生成阶段，系统还会执行更为细致的“四阶段”（4-pass）校验。更多关于事实核查和修订的细节，请参阅：[质量校验与修订](质量校验与修订.md)。
 

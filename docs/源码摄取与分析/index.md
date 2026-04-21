@@ -1,3 +1,7 @@
+---
+sidebar_position: 2
+---
+
 # 源码摄取与分析
 
 在 AutoWiki 的自动化文档生成流水线中，源码摄取与分析是所有后续步骤的基石。该流程负责将远程 GitHub 存储库转化为系统可理解的结构化数据。这一阶段不仅涉及文件的物理获取，更通过深度语法分析（AST）和依赖关系建模，构建出代码库的“语义地图”。本页面旨在提供该预处理阶段的高层架构视图，并详细阐述各组件之间的协作逻辑。
@@ -34,7 +38,7 @@ flowchart TD
     Readme --> End["Stage 1 完成: 返回文件列表"]
 ```
 
-*Source: worker/pipeline/ingestion.py:88-340*
+*Source: [worker/pipeline/ingestion.py:88-340*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/ingestion.py#L88-L340*)
 
 ## 语法结构解析 (AST Analysis)
 
@@ -85,7 +89,7 @@ classDiagram
     FileInfo "1" *-- "*" Entity : contains
 ```
 
-*Source: worker/pipeline/ast_analysis.py:348-537*
+*Source: [worker/pipeline/ast_analysis.py:348-537*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/ast_analysis.py#L348-L537*)
 
 ## 依赖图谱构建与分析
 
@@ -104,7 +108,7 @@ classDiagram
 *   **边 (Edges)**：文件 A 显式导入文件 B 中的符号。
 *   **路径解析逻辑**：支持相对路径转换、绝对包名匹配及常见后缀（.py, .js, .ts）的启发式猜测。
 
-*Source: worker/pipeline/dependency_graph.py:143-370*
+*Source: [worker/pipeline/dependency_graph.py:143-370*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/dependency_graph.py#L143-L370*)
 
 ## LLM 上下文优化
 
@@ -119,7 +123,7 @@ classDiagram
 
 通过这种“有损但保留关键特征”的压缩方式，AutoWiki 能够确保即使是数万行的代码库，其核心架构设计也能被 LLM 完整捕获。
 
-*Source: worker/pipeline/ast_analysis.py:377-537, worker/pipeline/dependency_graph.py:430-489*
+*Source: [worker/pipeline/ast_analysis.py:377-537](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/ast_analysis.py#L377-L537), [worker/pipeline/dependency_graph.py:430-489*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/dependency_graph.py#L430-L489*)
 
 ## Source Files
 

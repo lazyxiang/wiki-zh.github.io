@@ -1,3 +1,7 @@
+---
+sidebar_position: 4
+---
+
 # AI 抽象层
 
 AutoWiki 的 AI 抽象层旨在通过标准化的接口屏蔽不同大语言模型（LLM）和向量嵌入（Embedding）提供商之间的 API 差异。这种设计确保了系统核心逻辑（如维基规划、事实核查和页面生成）与底层模型实现解耦，使开发者能够根据成本、性能或隐私需求，在 Anthropic、OpenAI、Google Gemini 以及本地运行的 Ollama 模型之间无缝切换。
@@ -53,7 +57,7 @@ classDiagram
     LLMConfig ..> LLMProvider : configures
 ```
 
-*Source: worker/llm/base.py:49-155, shared/config.py:11-32*
+*Source: [worker/llm/base.py:49-155](https://github.com/lazyxiang/AutoWiki/blob/main/worker/llm/base.py#L49-L155), [shared/config.py:11-32*](https://github.com/lazyxiang/AutoWiki/blob/main/shared/config.py#L11-L32*)
 
 ## 核心接口与功能定义
 
@@ -68,7 +72,7 @@ classDiagram
 
 为了增强容错性，基类提供了 `_parse_json_response` 工具函数。由于 Gemini 等模型有时会将 JSON 包裹在 Markdown 代码块（如 ` ```json `）中，该函数会自动剥离这些装饰符，确保 `json.loads` 的稳定性。
 
-*Source: worker/llm/base.py:15-85*
+*Source: [worker/llm/base.py:15-85*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/llm/base.py#L15-L85*)
 
 ## 配置与环境管理
 
@@ -81,7 +85,7 @@ AutoWiki 使用 Pydantic 模型 `LLMConfig` 和 `EmbeddingConfig` 集中管理 A
     *   `EmbeddingConfig.provider` 默认为 `"openai"`。
     *   `ChatConfig` 控制历史对话窗口大小，默认为 10 条消息。
 
-*Source: shared/config.py:11-103*
+*Source: [shared/config.py:11-103*](https://github.com/lazyxiang/AutoWiki/blob/main/shared/config.py#L11-L103*)
 
 ## 执行流程与并发控制
 
@@ -112,7 +116,7 @@ flowchart TD
 
 在执行过程中，系统还会利用 `_truncate` 函数对输入提示词进行截断处理后记入调试日志。这既保证了日志的可读性（避免数万字的提示词刷屏），又在一定程度上通过 `LoggingLLMProvider` 提供了对模型输出质量的可追溯性。
 
-*Source: worker/llm/base.py:42-46, 66-85*
+*Source: [worker/llm/base.py:42-46](https://github.com/lazyxiang/AutoWiki/blob/main/worker/llm/base.py#L42-L46), 66-85*
 
 ## Source Files
 

@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # 系统核心基础
 
 AutoWiki 的系统架构建立在高度解耦且类型安全的底层基础之上。本页面旨在介绍支撑整个应用运行的核心机制，包括全局配置系统、基于 SQLAlchemy 的对象关系映射（ORM）数据模型，以及协调异步任务与数据库状态同步的后台作业机制。这些组件共同构成了 AutoWiki 的基础设施层，为 API 服务、Worker 节点和 CLI 工具提供了统一的运行环境 and 数据视图。
@@ -36,7 +40,7 @@ flowchart TD
     CLI -->|"读取"| C
     API -->|"读取"| C
 ```
-*Source: shared/config.py:11-103, shared/models.py:13-112, worker/jobs.py:66-177*
+*Source: [shared/config.py:11-103](https://github.com/lazyxiang/AutoWiki/blob/main/shared/config.py#L11-L103), [shared/models.py:13-112](https://github.com/lazyxiang/AutoWiki/blob/main/shared/models.py#L13-L112), [worker/jobs.py:66-177*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/jobs.py#L66-L177*)
 
 在这个架构中，`shared/database.py` 负责初始化数据库引擎并管理会话周期。所有的数据库实体（如 `Repository`, `Job`）均统一声明，使得 Worker 在处理深层研究（Deep Research）或页面生成（Page Generation）等耗时任务时，能够通过 `worker/jobs.py` 提供的工具函数，在非阻塞的情况下安全地回写执行状态和错误日志。
 
@@ -61,7 +65,7 @@ AutoWiki 使用 Pydantic 的 `BaseSettings` 构建了一套强类型的配置管
 
 这种空值回退机制目前主要应用于 `LLMConfig`（针对 `provider` 和 `cache_ttl` 字段）以及 `EmbeddingConfig`（针对 `provider` 字段），确保了核心 LLM 服务的稳定性。在 `LLMConfig` 中，`_coerce_empty_to_default` 方法确保了供应商和缓存策略在环境参数为空时能正确回退。类似地，`EmbeddingConfig` 中的 `_coerce_empty_provider` 确保了嵌入供应商的可靠性。而对于 `ServerConfig` 或 `ChatConfig` 等其他配置模块，系统则遵循标准的环境变量覆盖逻辑。这种机制在 Docker 容器化部署中尤为重要，因为容器环境经常会传递空的占位变量。
 
-*Source: shared/config.py:27-32, shared/config.py:43-45*
+*Source: [shared/config.py:27-32](https://github.com/lazyxiang/AutoWiki/blob/main/shared/config.py#L27-L32), [shared/config.py:43-45*](https://github.com/lazyxiang/AutoWiki/blob/main/shared/config.py#L43-L45*)
 
 ### 路径管理与单例模式
 
@@ -72,7 +76,7 @@ AutoWiki 使用 Pydantic 的 `BaseSettings` 构建了一套强类型的配置管
 
 为了方便测试，系统还提供了 `reset_config()` 函数，允许在单元测试执行期间强制清除配置缓存并重新加载环境变量。关于配置系统的详细实现及 LLM 抽象层，请参阅子页面：[全局配置管理](全局配置管理.md)。
 
-*Source: shared/config.py:88-103, shared/config.py:116-119*
+*Source: [shared/config.py:88-103](https://github.com/lazyxiang/AutoWiki/blob/main/shared/config.py#L88-L103), [shared/config.py:116-119*](https://github.com/lazyxiang/AutoWiki/blob/main/shared/config.py#L116-L119*)
 
 ## 数据持久化模型
 
@@ -121,7 +125,7 @@ classDiagram
     Repository "1" *-- "many" WikiPage : contains
     Repository "1" -- "0..1" ResearchReport : analyzed_by
 ```
-*Source: shared/models.py:9-112*
+*Source: [shared/models.py:9-112*](https://github.com/lazyxiang/AutoWiki/blob/main/shared/models.py#L9-L112*)
 
 ### 模型职责说明
 
@@ -132,7 +136,7 @@ classDiagram
 
 所有的模型都通过 `shared/database.py` 中提供的 `get_session()` 上下文管理器进行访问。更多关于表间关系、字段约束及事务处理的内容，请参考子页面：[数据库模型与持久化](数据库模型与持久化.md)。
 
-*Source: shared/models.py:13-32, shared/models.py:35-48, shared/models.py:51-64*
+*Source: [shared/models.py:13-32](https://github.com/lazyxiang/AutoWiki/blob/main/shared/models.py#L13-L32), [shared/models.py:35-48](https://github.com/lazyxiang/AutoWiki/blob/main/shared/models.py#L35-L48), [shared/models.py:51-64*](https://github.com/lazyxiang/AutoWiki/blob/main/shared/models.py#L51-L64*)
 
 ## 异步任务处理机制
 
@@ -147,7 +151,7 @@ AutoWiki 的异步任务处理机制具有以下特点：
 *   **重试状态同步**: `_make_on_retry` 是一个高阶函数，它返回一个专门用于处理流水线重试逻辑的回调闭包。当某个流水线步骤（如 LLM 调用）因网络问题失败并进入重试序列时，该回调会自动更新数据库中对应 `Job` 的错误信息 and 当前状态，使得用户可以在前端看到“正在重试...”的提示。
 *   **解耦的错误记录**: 当任务失败时，`_update_job` 会负责将异常堆栈或错误描述写入 `error` 字段。这与配置系统中的 `error_log_path` 共同构成了系统的双重诊断机制。
 
-*Source: worker/jobs.py:66-131, worker/jobs.py:139-177*
+*Source: [worker/jobs.py:66-131](https://github.com/lazyxiang/AutoWiki/blob/main/worker/jobs.py#L66-L131), [worker/jobs.py:139-177*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/jobs.py#L139-L177*)
 
 ### 任务生命周期示例
 
@@ -158,7 +162,7 @@ AutoWiki 的异步任务处理机制具有以下特点：
 
 这种机制确保了 AutoWiki 的 Worker 进程即便在极高负载下，也能保持对前端的状态透明度。关于系统如何应对调用失败及重试策略的深度解析，请参阅：[错误处理与弹性机制](错误处理与弹性机制.md)。
 
-*Source: worker/jobs.py:90-110, worker/jobs.py:113-131*
+*Source: [worker/jobs.py:90-110](https://github.com/lazyxiang/AutoWiki/blob/main/worker/jobs.py#L90-L110), [worker/jobs.py:113-131*](https://github.com/lazyxiang/AutoWiki/blob/main/worker/jobs.py#L113-L131*)
 
 ## Source Files
 

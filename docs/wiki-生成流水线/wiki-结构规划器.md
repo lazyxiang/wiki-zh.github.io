@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # Wiki 结构规划器
 
 ## Wiki 结构规划器概述
@@ -27,7 +31,7 @@ flowchart TD
     end
 ```
 
-*Source: worker/pipeline/wiki_planner.py:101-111, 385-478*
+*Source: [worker/pipeline/wiki_planner.py:101-111](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/wiki_planner.py#L101-L111), 385-478*
 
 ## 数据结构定义
 
@@ -51,7 +55,7 @@ flowchart TD
 *   **ast/wiki_plan.json (Internal)**: 通过 `to_internal_json()` 生成，包含完整的文件映射，供增量生成逻辑使用。
 *   **API Response (Frontend)**: 通过 `to_api_structure()` 生成，将标题转换为 URL 安全的 `slug`，并将 `purpose` 重命名为 `description` 以适配前端展示。
 
-*Source: worker/pipeline/wiki_planner.py:115-183, 187-308*
+*Source: [worker/pipeline/wiki_planner.py:115-183](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/wiki_planner.py#L115-L183), 187-308*
 
 ## 核心逻辑与处理流程
 
@@ -98,7 +102,7 @@ classDiagram
     WikiPlan ..> WikiPlannerError : 序列化失败抛出
 ```
 
-*Source: worker/pipeline/wiki_planner.py:531-601, 638-722*
+*Source: [worker/pipeline/wiki_planner.py:531-601](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/wiki_planner.py#L531-L601), 638-722*
 
 ### 启发式回退机制
 当 LLM 在 Phase 2 无法在有效时间内完成文件分配，或者分配逻辑持续违反约束（例如每页分配文件过多）时，系统会激活回退机制。
@@ -106,7 +110,7 @@ classDiagram
 *   **_heuristic_select_files**: 该方法首先保留 LLM 已成功完成的部分分配结果。对于剩余页面，它计算每个文件与页面 `purpose` 之间的相关性得分，并将得分最高的文件填补进去。
 *   **_directory_cluster_assign**: 这是一个更底层的保底策略。它按照文件的目录层级进行聚类，并使用 `_best_matching_page()` 将整个目录分配给标题语义最接近的 Wiki 页面。这保证了即使在完全没有 LLM 参与的情况下，生成的 Wiki 结构依然能反映代码库的物理组织。
 
-*Source: worker/pipeline/wiki_planner.py:821-898, 901-944*
+*Source: [worker/pipeline/wiki_planner.py:821-898](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/wiki_planner.py#L821-L898), 901-944*
 
 ## 文件分配策略
 
@@ -128,7 +132,7 @@ classDiagram
 *   **数量阈值**：单个页面关联的文件数量通常受到限制，以防止生成的文档过于臃肿。
 *   **有效性检查**：所有分配的文件路径必须在仓库中真实存在。
 
-*Source: worker/pipeline/wiki_planner.py:725-767, 770-818, 604-635*
+*Source: [worker/pipeline/wiki_planner.py:725-767](https://github.com/lazyxiang/AutoWiki/blob/main/worker/pipeline/wiki_planner.py#L725-L767), 770-818, 604-635*
 
 ## Source Files
 
