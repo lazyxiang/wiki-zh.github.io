@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwiki=self.webpackChunkwiki||[]).push([[4583],{6866:(i,u,e)=>{e.r(u),e.d(u,{default:()=>r});e(6540);var k=e(6347),t=e(4848);function r(){return(0,t.jsx)(k.rd,{to:"/wiki-zh.github.io/\u7cfb\u7edf\u6838\u5fc3\u57fa\u7840/"})}}}]);
