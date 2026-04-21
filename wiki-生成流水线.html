@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.5.2">
 <title data-rh="true">Wiki 生成流水线 | Wiki</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://lazyxiang.github.io/wiki-zh.github.io/wiki-生成流水线"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Wiki 生成流水线 | Wiki"><meta data-rh="true" name="description" content="AutoWiki 的生成流水线是一个高度结构化的多阶段异步处理过程。它将原始的源代码仓库作为输入，通过静态分析、语义建模和生成式人工智能，最终产出结构严谨、内容详实且具备互联参考能力的 Wiki 文档。该流水线由 worker/jobs.py 调度，核心逻辑分布在 worker/pipeline/ 目录下的多个专门模块中。"><meta data-rh="true" property="og:description" content="AutoWiki 的生成流水线是一个高度结构化的多阶段异步处理过程。它将原始的源代码仓库作为输入，通过静态分析、语义建模和生成式人工智能，最终产出结构严谨、内容详实且具备互联参考能力的 Wiki 文档。该流水线由 worker/jobs.py 调度，核心逻辑分布在 worker/pipeline/ 目录下的多个专门模块中。"><link data-rh="true" rel="icon" href="/wiki-zh.github.io/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://lazyxiang.github.io/wiki-zh.github.io/wiki-生成流水线"><link data-rh="true" rel="alternate" href="https://lazyxiang.github.io/wiki-zh.github.io/wiki-生成流水线" hreflang="en"><link data-rh="true" rel="alternate" href="https://lazyxiang.github.io/wiki-zh.github.io/wiki-生成流水线" hreflang="x-default"><link rel="stylesheet" href="/wiki-zh.github.io/assets/css/styles.9449493e.css">
-<script src="/wiki-zh.github.io/assets/js/runtime~main.31845171.js" defer="defer"></script>
+<script src="/wiki-zh.github.io/assets/js/runtime~main.082eb6a4.js" defer="defer"></script>
 <script src="/wiki-zh.github.io/assets/js/main.6f2973fa.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -23,7 +23,7 @@
 <li><strong>Wiki Planner</strong>: 制定 Wiki 的整体架构，包括页面标题、层级和关联文件。</li>
 <li><strong>Page Generation</strong>: 递归生成各个页面的 Markdown 内容并进行校验。</li>
 </ol>
-<p>关于规划和  生成的详细机制，请参阅子页面：<a href="/wiki-zh.github.io/Wiki-结构规划器">Wiki 结构规划器</a> 和 <a href="/wiki-zh.github.io/内容生成引擎">内容生成引擎</a>。</p>
+<p>关于规划和  生成的详细机制，请参阅子页面：<a href="/wiki-zh.github.io/Wiki-结构规划器.md">Wiki 结构规划器</a> 和 <a href="/wiki-zh.github.io/wiki-生成流水线/内容生成引擎">内容生成引擎</a>。</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="核心数据结构与实体模型">核心数据结构与实体模型<a href="#核心数据结构与实体模型" class="hash-link" aria-label="Direct link to 核心数据结构与实体模型" title="Direct link to 核心数据结构与实体模型">​</a></h2>
 <p>在整个流水线中，<code>WikiPlan</code> 和 <code>WikiPageSpec</code> 是承载结构化信息的关键载体。<code>WikiPlan</code> 代表了整个 Wiki 的蓝图，而 <code>WikiPageSpec</code> 定义了单个页面的生成规格。</p>
 <p><code>WikiPlanner</code> 会根据不同的消费场景，将这些实体序列化为多种格式：</p>
@@ -53,7 +53,7 @@
 <ul>
 <li><strong>数量约束</strong>: 页面总数必须在建议范围内（由 <code>_suggest_page_range</code> 决定）。</li>
 <li><strong>层级约束</strong>: 必须存在顶级标题，且二级标题不能脱离一级标题独立存在。</li>
-<li><strong>格式验证</strong>: 必须包含有效的标题和用途描述。</li>
+<li><strong>格式验证</strong>: 必须包含有效的标题和用途描述  。</li>
 </ul>
 </li>
 <li><strong>文件选择验证 (<code>_validate_selections</code>)</strong>:<!-- -->
@@ -70,7 +70,7 @@
 </li>
 </ul>
 <p><em>Source: worker/pipeline/wiki_planner.py:79-86, 496-528, 531-601, 604-635</em></p>
-<p>在页面内容生成阶段，系统还会执行更为细致的“四阶段”（4-pass）校验。更多关于事实核查和修订的细节，请参阅：<a href="/wiki-zh.github.io/质量校验与修订">质量校验与修订</a>。</p>
+<p>在页面内容生成阶段，系统还会执行更为细致的“四阶段”（4-pass）校验。更多关于事实核查和修订的细节，请参阅：<a href="/wiki-zh.github.io/wiki-生成流水线/质量校验与修订">质量校验与修订</a>。</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="source-files">Source Files<a href="#source-files" class="hash-link" aria-label="Direct link to Source Files" title="Direct link to Source Files">​</a></h2>
 <table><thead><tr><th>File</th></tr></thead><tbody><tr><td><code>worker/pipeline/wiki_planner.py</code></td></tr><tr><td><code>worker/jobs.py</code></td></tr><tr><td><code>worker/pipeline/page_outline.py</code></td></tr><tr><td><code>worker/pipeline/page_generator.py</code></td></tr></tbody></table></div></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/wiki-zh.github.io/ai-抽象层/提示词段落化管理"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">提示词段落化管理</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/wiki-zh.github.io/wiki-生成流水线/mermaid-图表优化"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Mermaid 图表优化</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#wiki-生成流水线概述" class="table-of-contents__link toc-highlight">Wiki 生成流水线概述</a></li><li><a href="#核心数据结构与实体模型" class="table-of-contents__link toc-highlight">核心数据结构与实体模型</a></li><li><a href="#页面规划与文件分配逻辑" class="table-of-contents__link toc-highlight">页面规划与文件分配逻辑</a><ul><li><a href="#1-结构大纲生成-phase-1" class="table-of-contents__link toc-highlight">1. 结构大纲生成 (Phase 1)</a></li><li><a href="#2-文件分配机制-phase-2" class="table-of-contents__link toc-highlight">2. 文件分配机制 (Phase 2)</a></li></ul></li><li><a href="#质量校验与自动化重试机制" class="table-of-contents__link toc-highlight">质量校验与自动化重试机制</a></li><li><a href="#source-files" class="table-of-contents__link toc-highlight">Source Files</a></li></ul></div></div></div></div></main></div></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Wiki.</div></div></div></footer></div>
 </body>

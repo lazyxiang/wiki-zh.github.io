@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.5.2">
 <title data-rh="true">系统核心基础 | Wiki</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://lazyxiang.github.io/wiki-zh.github.io/系统核心基础"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="系统核心基础 | Wiki"><meta data-rh="true" name="description" content="AutoWiki 的系统架构建立在高度解耦且类型安全的底层基础之上。本页面旨在介绍支撑整个应用运行的核心机制，包括全局配置系统、基于 SQLAlchemy 的对象关系映射（ORM）数据模型，以及协调异步任务与数据库状态同步的后台作业机制。这些组件共同构成了 AutoWiki 的基础设施层，为 API 服务、Worker 节点和 CLI 工具提供了统一的运行环境 and 数据视图。"><meta data-rh="true" property="og:description" content="AutoWiki 的系统架构建立在高度解耦且类型安全的底层基础之上。本页面旨在介绍支撑整个应用运行的核心机制，包括全局配置系统、基于 SQLAlchemy 的对象关系映射（ORM）数据模型，以及协调异步任务与数据库状态同步的后台作业机制。这些组件共同构成了 AutoWiki 的基础设施层，为 API 服务、Worker 节点和 CLI 工具提供了统一的运行环境 and 数据视图。"><link data-rh="true" rel="icon" href="/wiki-zh.github.io/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://lazyxiang.github.io/wiki-zh.github.io/系统核心基础"><link data-rh="true" rel="alternate" href="https://lazyxiang.github.io/wiki-zh.github.io/系统核心基础" hreflang="en"><link data-rh="true" rel="alternate" href="https://lazyxiang.github.io/wiki-zh.github.io/系统核心基础" hreflang="x-default"><link rel="stylesheet" href="/wiki-zh.github.io/assets/css/styles.9449493e.css">
-<script src="/wiki-zh.github.io/assets/js/runtime~main.31845171.js" defer="defer"></script>
+<script src="/wiki-zh.github.io/assets/js/runtime~main.082eb6a4.js" defer="defer"></script>
 <script src="/wiki-zh.github.io/assets/js/main.6f2973fa.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -30,7 +30,7 @@
 <p><code>Config</code> 类不仅持有配置数据，还封装了日志路径的计算逻辑。通过 <code>error_log_path</code>, <code>task_log_path</code> 和 <code>llm_log_path</code> 方法，系统能够根据配置的数据库路径自动推导出日志文件的存放位置。</p>
 <h1>示例：Config 类内部的路径推导逻辑</h1>
 <h1>error_log_path -&gt; Path(self.server.db_path).parent / &quot;error.log&quot;</h1>
-<p>为了方便测试，系统还提供了 <code>reset_config()</code> 函数，允许在单元测试执行期间强制清除配置缓存并重新加载环境变量。关于配置系统的详细实现及 LLM 抽象层，请参阅子页面：<a href="/wiki-zh.github.io/全局配置管理">全局配置管理</a>。</p>
+<p>为了方便测试，系统还提供了 <code>reset_config()</code> 函数，允许在单元测试执行期间强制清除配置缓存并重新加载环境变量。关于配置系统的详细实现及 LLM 抽象层，请参阅子页面：<a href="/wiki-zh.github.io/系统核心基础/全局配置管理">全局配置管理</a>。</p>
 <p><em>Source: shared/config.py:88-103, shared/config.py:116-119</em></p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="数据持久化模型">数据持久化模型<a href="#数据持久化模型" class="hash-link" aria-label="Direct link to 数据持久化模型" title="Direct link to 数据持久化模型">​</a></h2>
 <p>AutoWiki 的持久化层基于 SQLAlchemy 声明式基类（<code>Base</code>），在 <code>shared/models.py</code> 中定义了整个系统的核心领域模型。这些模型不仅定义了 SQLite 的表结构，还承载了业务逻辑中的状态转换信息。</p>
@@ -44,10 +44,10 @@
 <li><strong>WikiPage</strong>: 存储最终生成的文档内容。它包含 Markdown 格式的正文、标题以及所属的分类，与 <code>Repository</code> 形成多对一关系。</li>
 <li><strong>ResearchReport</strong>: 存储深度研究阶段生成的结构化分析结果，通常包含对复杂架构的详细解读。</li>
 </ol>
-<p>所有的模型都通过 <code>shared/database.py</code> 中提供的 <code>get_session()</code> 上下文管理器进行访问。更多关于表间关系、字段约束及事务处理的内容，请参考子页面：<a href="/wiki-zh.github.io/数据库模型与持久化">数据库模型与持久化</a>。</p>
+<p>所有的模型都通过 <code>shared/database.py</code> 中提供的 <code>get_session()</code> 上下文管理器进行访问。更多关于表间关系、字段约束及事务处理的内容，请参考子页面：<a href="/wiki-zh.github.io/系统核心基础/数据库模型与持久化">数据库模型与持久化</a>。</p>
 <p><em>Source: shared/models.py:13-32, shared/models.py:35-48, shared/models.py:51-64</em></p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="异步任务处理机制">异步任务处理机制<a href="#异步任务处理机制" class="hash-link" aria-label="Direct link to 异步任务处理机制" title="Direct link to 异步任务处理机制">​</a></h2>
-<p>在 <code>worker/jobs.py</code> 中，AutoWiki 实现了一套专门用于衔接后台流水线与数据库状态的工具函数。由于代码索引和页面生成通常涉及大量磁盘 I/O 和网络调用，系统必须确保这些操作不会阻塞 Python 的异步事件循环（Event Loop）。</p>
+<p>在 <code>worker/jobs.py</code> 中，AutoWiki 实现了一套专门用于衔接 后台流水线与数据库状态的工具函数。由于代码索引和页面生成通常涉及大量磁盘 I/O 和网络调用，系统必须确保这些操作不会阻塞 Python 的异步事件循环（Event Loop）。</p>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="核心处理逻辑">核心处理逻辑<a href="#核心处理逻辑" class="hash-link" aria-label="Direct link to 核心处理逻辑" title="Direct link to 核心处理逻辑">​</a></h3>
 <p>AutoWiki 的异步任务处理机制具有以下特点：</p>
 <ul>
@@ -57,14 +57,14 @@
 <li><strong>解耦的错误记录</strong>: 当任务失败时，<code>_update_job</code> 会负责将异常堆栈或错误描述写入 <code>error</code> 字段。这与配置系统中的 <code>error_log_path</code> 共同构成了系统的双重诊断机制。</li>
 </ul>
 <p><em>Source: worker/jobs.py:66-131, worker/jobs.py:139-177</em></p>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="任务生命周期示例">任务生命周期示例<a href="#任务生命周期示例" class="hash-link" aria-label="Direct link to 任务生命周期示例" title="Direct link to 任务生命周期示例">​</a></h3>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="任务生命周期示例">任务生命周期示例<a href="#任务生  命周期示例" class="hash-link" aria-label="Direct link to 任务生命周期示例" title="Direct link to 任务生命周期示例">​</a></h3>
 <ol>
 <li><strong>启动</strong>: 当一个新任务开始时，调用者通过 <code>_update_job</code> 将状态设为 <code>running</code>，并将 <code>progress</code> 设为 0。</li>
 <li><strong>执行</strong>: 随着流水线的推进，Worker 定期调用更新函数同步进度（例如，摄取完 50% 的文件后更新为 50）。</li>
 <li><strong>重试</strong>: 如果遇到临时故障，由 <code>_make_on_retry</code> 生成的闭包被触发，数据库状态实时反馈重试次数。</li>
 <li><strong>结束</strong>: 任务完成后，<code>Job</code> 状态变为 <code>completed</code>；若发生不可恢复错误，则变为 <code>failed</code> 并记录详细错误原因。</li>
 </ol>
-<p>这种机制确保了 AutoWiki 的 Worker 进程即便在极高负载下，也能保持对前端的状态透明度。关于系统如何应对调用失败及重试策略的深度解析，请参阅：<a href="/wiki-zh.github.io/错误处理与弹性机制">错误处理与弹性机制</a>。</p>
+<p>这种机制确保了 AutoWiki 的 Worker 进程即便在极高负载下，也能保持对前端的状态透明度。关于系统如何应对调用失败及重试策略的深度解析，请参阅：<a href="/wiki-zh.github.io/系统核心基础/错误处理与弹性机制">错误处理与弹性机制</a>。</p>
 <p><em>Source: worker/jobs.py:90-110, worker/jobs.py:113-131</em></p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="source-files">Source Files<a href="#source-files" class="hash-link" aria-label="Direct link to Source Files" title="Direct link to Source Files">​</a></h2>
 <table><thead><tr><th>File</th></tr></thead><tbody><tr><td><code>shared/config.py</code></td></tr><tr><td><code>shared/models.py</code></td></tr><tr><td><code>worker/jobs.py</code></td></tr><tr><td><code>shared/database.py</code></td></tr></tbody></table></div></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/wiki-zh.github.io/源码摄取与分析/依赖图谱构建"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">依赖图谱构建</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/wiki-zh.github.io/系统核心基础/全局配置管理"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">全局配置管理</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#架构总览" class="table-of-contents__link toc-highlight">架构总览</a></li><li><a href="#全局配置管理" class="table-of-contents__link toc-highlight">全局配置管理</a><ul><li><a href="#配置模块定义" class="table-of-contents__link toc-highlight">配置模块定义</a></li><li><a href="#强制类型转换与防御性编程" class="table-of-contents__link toc-highlight">强制类型转换与防御性编程</a></li><li><a href="#路径管理与单例模式" class="table-of-contents__link toc-highlight">路径管理与单例模式</a></li></ul></li><li><a href="#数据持久化模型" class="table-of-contents__link toc-highlight">数据持久化模型</a><ul><li><a href="#模型职责说明" class="table-of-contents__link toc-highlight">模型职责说明</a></li></ul></li><li><a href="#异步任务处理机制" class="table-of-contents__link toc-highlight">异步任务处理机制</a><ul><li><a href="#核心处理逻辑" class="table-of-contents__link toc-highlight">核心处理逻辑</a></li><li><a href="#任务生命周期示例" class="table-of-contents__link toc-highlight">任务生命周期示例</a></li></ul></li><li><a href="#source-files" class="table-of-contents__link toc-highlight">Source Files</a></li></ul></div></div></div></div></main></div></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Wiki.</div></div></div></footer></div>

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwiki=self.webpackChunkwiki||[]).push([[4583],{6866:(e,u,i)=>{i.r(u),i.d(u,{default:()=>t});i(6540);var k=i(6347),r=i(6025),s=i(4848);function t(){return(0,s.jsx)(k.rd,{to:(0,r.Ay)("/\u7cfb\u7edf\u6838\u5fc3\u57fa\u7840/")})}}}]);
