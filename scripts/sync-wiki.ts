@@ -29,7 +29,7 @@ async function sync() {
   });
 
   // Helper to slugify title to filename
-  const slugify = (t: string) => t.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\u4e00-\u9fa5-]+/g, '');
+  const slugify = (t: string) => t.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\u4e00-\u9fa5-]+/g, '').replace(/^-+|-+$/g, '');
 
   // Helper to find source file
   const findSource = (title: string) => {
