@@ -8,7 +8,7 @@ const config: Config = {
   favicon: 'img/favicon.ico',
   url: 'https://wiki-zh.github.io',
   baseUrl: '/',
-  organizationName: 'wiki-zh',
+  organizationName: 'lazyxiang',
   projectName: 'wiki-zh.github.io',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
