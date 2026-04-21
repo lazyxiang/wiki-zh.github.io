@@ -12,7 +12,8 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "sync": "ts-node scripts/sync-wiki.ts"
   },
   "dependencies": {
     "@docusaurus/core": "3.10.0",
@@ -20,10 +21,14 @@
     "@docusaurus/preset-classic": "3.10.0",
     "@docusaurus/theme-mermaid": "^3.10.0",
     "@mdx-js/react": "^3.0.0",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^25.6.0",
     "clsx": "^2.0.0",
+    "fs-extra": "^11.3.4",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.10.0",
