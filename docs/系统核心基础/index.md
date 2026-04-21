@@ -70,7 +70,7 @@ AutoWiki 使用 Pydantic 的 `BaseSettings` 构建了一套强类型的配置管
     # 示例：Config 类内部的路径推导逻辑
     # error_log_path -> Path(self.server.db_path).parent / "error.log"
 
-为了方便测试，系统还提供了 `reset_config()` 函数，允许在单元测试执行期间强制清除配置缓存并重新加载环境变量。关于配置系统的详细实现及 LLM 抽象层，请参阅子页面：[全局配置管理](全局配置管理)。
+为了方便测试，系统还提供了 `reset_config()` 函数，允许在单元测试执行期间强制清除配置缓存并重新加载环境变量。关于配置系统的详细实现及 LLM 抽象层，请参阅子页面：[全局配置管理](全局配置管理.md)。
 
 *Source: shared/config.py:88-103, shared/config.py:116-119*
 
@@ -130,7 +130,7 @@ classDiagram
 3.  **WikiPage**: 存储最终生成的文档内容。它包含 Markdown 格式的正文、标题以及所属的分类，与 `Repository` 形成多对一关系。
 4.  **ResearchReport**: 存储深度研究阶段生成的结构化分析结果，通常包含对复杂架构的详细解读。
 
-所有的模型都通过 `shared/database.py` 中提供的 `get_session()` 上下文管理器进行访问。更多关于表间关系、字段约束及事务处理的内容，请参考子页面：[数据库模型与持久化](数据库模型与持久化)。
+所有的模型都通过 `shared/database.py` 中提供的 `get_session()` 上下文管理器进行访问。更多关于表间关系、字段约束及事务处理的内容，请参考子页面：[数据库模型与持久化](数据库模型与持久化.md)。
 
 *Source: shared/models.py:13-32, shared/models.py:35-48, shared/models.py:51-64*
 
@@ -156,7 +156,7 @@ AutoWiki 的异步任务处理机制具有以下特点：
 3.  **重试**: 如果遇到临时故障，由 `_make_on_retry` 生成的闭包被触发，数据库状态实时反馈重试次数。
 4.  **结束**: 任务完成后，`Job` 状态变为 `completed`；若发生不可恢复错误，则变为 `failed` 并记录详细错误原因。
 
-这种机制确保了 AutoWiki 的 Worker 进程即便在极高负载下，也能保持对前端的状态透明度。关于系统如何应对调用失败及重试策略的深度解析，请参阅：[错误处理与弹性机制](错误处理与弹性机制)。
+这种机制确保了 AutoWiki 的 Worker 进程即便在极高负载下，也能保持对前端的状态透明度。关于系统如何应对调用失败及重试策略的深度解析，请参阅：[错误处理与弹性机制](错误处理与弹性机制.md)。
 
 *Source: worker/jobs.py:90-110, worker/jobs.py:113-131*
 

@@ -57,8 +57,15 @@ async function sync() {
       const dirPath = path.join(currentPath, slug);
       await fs.ensureDir(dirPath);
       
-      // Category index
-      await fs.copy(sourcePath, path.join(dirPath, 'index.md'));
+      // Fix links in the content before copying
+      let content = await fs.readFile(sourcePath, 'utf-8');
+      content = content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, link) => {
+        if (!link.startsWith('http') && !link.startsWith('#') && !link.endsWith('.md')) {
+          return `[${text}](${link}.md)`;
+        }
+        return match;
+      });
+      await fs.writeFile(path.join(dirPath, 'index.md'), content);
       
       // _category_.json
       await fs.writeJson(path.join(dirPath, '_category_.json'), {
@@ -71,7 +78,14 @@ async function sync() {
         await processPage(child, dirPath);
       }
     } else {
-      await fs.copy(sourcePath, path.join(currentPath, `${slug}.md`));
+      let content = await fs.readFile(sourcePath, 'utf-8');
+      content = content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, link) => {
+        if (!link.startsWith('http') && !link.startsWith('#') && !link.endsWith('.md')) {
+          return `[${text}](${link}.md)`;
+        }
+        return match;
+      });
+      await fs.writeFile(path.join(currentPath, `${slug}.md`), content);
     }
   };
 
