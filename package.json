@@ -1,5 +1,5 @@
 {
-  "name": "temp-doc",
+  "name": "wiki",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -16,26 +16,28 @@
     "sync": "ts-node scripts/sync-wiki.ts"
   },
   "dependencies": {
-    "@docusaurus/core": "3.10.0",
-    "@docusaurus/faster": "3.10.0",
-    "@docusaurus/preset-classic": "3.10.0",
-    "@docusaurus/theme-mermaid": "^3.10.0",
+    "@docusaurus/core": "3.5.2",
+    "@docusaurus/preset-classic": "3.5.2",
+    "@docusaurus/theme-mermaid": "3.5.2",
     "@mdx-js/react": "^3.0.0",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^25.6.0",
     "clsx": "^2.0.0",
     "fs-extra": "^11.3.4",
     "prism-react-renderer": "^2.3.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.10.0",
-    "@docusaurus/tsconfig": "3.10.0",
-    "@docusaurus/types": "3.10.0",
-    "@types/react": "^19.0.0",
-    "typescript": "~6.0.2"
+    "@docusaurus/module-type-aliases": "3.5.2",
+    "@docusaurus/tsconfig": "3.5.2",
+    "@docusaurus/types": "3.5.2",
+    "@types/react": "^18.0.0",
+    "typescript": "~5.2.2"
+  },
+  "overrides": {
+    "webpack": "5.94.0"
   },
   "browserslist": {
     "production": [
@@ -50,6 +52,6 @@
     ]
   },
   "engines": {
-    "node": ">=20.0"
+    "node": ">=18.0"
   }
 }

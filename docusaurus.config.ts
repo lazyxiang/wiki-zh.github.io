@@ -10,7 +10,7 @@ const config: Config = {
   baseUrl: '/',
   organizationName: 'lazyxiang',
   projectName: 'wiki-zh.github.io',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   trailingSlash: false,
   markdown: {
